@@ -15,7 +15,7 @@ serviceContainer.bind<LoggerInterface>(TYPES.LoggerInterface).toConstantValue(Lo
 serviceContainer.bind<RedisInterface>(TYPES.RedisInterface).toConstantValue(RedisProvider.getInstance());
 serviceContainer.bind<BcryptInterface>(TYPES.BcryptInterface).toConstantValue(BcryptProvider.getInstance());
 serviceContainer.bind<ElasticInterface>(TYPES.ElasticInterface).toConstantValue(ElasticProvider.getInstance());
-serviceContainer.bind<MysqlInterface>(TYPES.MysqlInterface).to(MysqlProvider);
+serviceContainer.bind<MysqlInterface>(TYPES.MysqlInterface).toConstantValue(MysqlProvider.getInstance());
 serviceContainer.bind<DatabaseInterface>(TYPES.DatabaseInterface).to(DatabaseProvider);
 // todo: will remove
 serviceContainer.bind<ServiceInterface>(TYPES.ServiceInterface).to(ServiceProvider);

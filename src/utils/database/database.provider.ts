@@ -18,7 +18,6 @@ export class DatabaseProvider implements DatabaseInterface{
     }
 
     async mysql() {
-        this.loggerInstance.log("info", "mysql started")
         return await this.mysqlInstance.init();
     }
 

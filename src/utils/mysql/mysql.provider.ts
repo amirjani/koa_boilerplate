@@ -4,6 +4,8 @@ import {TYPES} from "../types";
 import {LoggerInterface} from "../logger";
 import mysql2 from "mysql2/promise";
 import {config} from "../../config";
+import {logger} from "@typegoose/typegoose/lib/logSettings";
+import {serviceContainer} from "../index";
 export {
     Pool as DatabasePool,
     PoolOptions as DatabasePoolOptions,
@@ -14,15 +16,26 @@ export class MysqlProvider implements MysqlInterface {
 
     constructor( @inject(TYPES.LoggerInterface) private logger: LoggerInterface ) {}
 
-    private instance: MysqlProvider;
+    public static instance: MysqlProvider;
     private pool: mysql2.Pool;
 
-    init() {
-        try {
-            const pool = mysql2.createPool(config.mysqlConfig)
-            this.logger.info("pool, ", pool)
-        }catch (e) {
+    public static getInstance() {
+        if (!MysqlProvider.instance) {
+            MysqlProvider.instance = new MysqlProvider(serviceContainer.get<LoggerInterface>(TYPES.LoggerInterface));
+            return MysqlProvider.instance;
+        } else {
+            throw new Error("MYSQL FACED A PROBLEM");
+        }
+    }
 
+    async init() {
+        try {
+            this.pool = mysql2.createPool(config.mysqlConfig)
+            await this.pool.execute("SELECT 1 + 1 AS Result");
+            this.logger.info("Database connected")
+            return this.pool;
+        }catch (e) {
+            this.logger.error("DATABASE FACED AN ERROR");
         }
     }
 }
