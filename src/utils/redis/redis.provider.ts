@@ -2,13 +2,9 @@ import { inject, injectable } from "inversify";
 import { RedisInterface } from "./redis.interface";
 import IORedis from "ioredis";
 import { config } from "../../config";
-import { logger } from "@typegoose/typegoose/lib/logSettings";
 import { TYPES } from "../types";
 import { LoggerInterface } from "../logger";
 import { serviceContainer } from "../index";
-import winston from "winston";
-import construct = Reflect.construct;
-import {constructors} from "@typegoose/typegoose/lib/internal/data";
 
 
 @injectable()

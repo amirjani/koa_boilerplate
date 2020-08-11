@@ -1,5 +1,5 @@
 export interface DatabaseInterface {
-    // mysql();
-    // elasticSearch();
+    mysql();
+    elasticSearch();
     redis();
 }

@@ -6,7 +6,7 @@ import { config } from "./config";
 
 useContainer(serviceContainer);
 
-const redis = serviceContainer.get<RedisInterface>(TYPES.RedisInterface);
+// const redis = serviceContainer.get<RedisInterface>(TYPES.RedisInterface);
 const database = serviceContainer.get<DatabaseInterface>(TYPES.DatabaseInterface);
 
 (async () => {
@@ -16,8 +16,8 @@ const database = serviceContainer.get<DatabaseInterface>(TYPES.DatabaseInterface
         controllers: [
         ]
     });
-    const _redis = await redis.init()
-    console.log(await database.redis());
+    // const _redis = await redis.init()
+    const redis = await database.redis();
 
     // app.init = async () => {
     // await database.redis();
