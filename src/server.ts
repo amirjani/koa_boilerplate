@@ -1,23 +1,26 @@
 import "reflect-metadata";
-import {createKoaServer, useContainer} from "routing-controllers";
-import {DatabaseInterface, RedisInterface, serviceContainer, ServiceInterface} from "./utils";
-import {TYPES} from "./utils/types";
-import {config} from "./config";
+import { createKoaServer, useContainer } from "routing-controllers";
+import { DatabaseInterface, RedisInterface, serviceContainer, ServiceInterface } from "./utils";
+import { TYPES } from "./utils/types";
+import { config } from "./config";
 
 useContainer(serviceContainer);
 
-const database = serviceContainer.get<RedisInterface>(TYPES.RedisInterface);
+const redis = serviceContainer.get<RedisInterface>(TYPES.RedisInterface);
+const database = serviceContainer.get<DatabaseInterface>(TYPES.DatabaseInterface);
 
-(async()=>{
+(async () => {
 
     const app = createKoaServer({
         routePrefix: `/api/${config.apiVersion}`,
         controllers: [
         ]
     });
+    const _redis = await redis.init()
+    console.log(await database.redis());
 
     // app.init = async () => {
-        // await database.redis();
+    // await database.redis();
     // }
 
     // await app.init();
