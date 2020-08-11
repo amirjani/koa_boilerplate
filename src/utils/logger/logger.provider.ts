@@ -9,10 +9,20 @@ import {TYPES} from "../types";
 @injectable()
 export class LoggerProvider implements LoggerInterface {
 
+    private static instance:LoggerProvider;
     private logger = winston;
 
     constructor() {
         this.init()
+    }
+
+    public static getInstance() {
+        if (!LoggerProvider.instance ) {
+            LoggerProvider.instance = new LoggerProvider();
+            return LoggerProvider.instance;
+        }else {
+            throw new Error("Logger Provider");
+        }
     }
 
     init() {
