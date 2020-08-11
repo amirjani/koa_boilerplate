@@ -1,5 +1,5 @@
 import {MysqlInterface} from "./mysql.interface";
-import {inject} from "inversify";
+import {inject, injectable} from "inversify";
 import {TYPES} from "../types";
 import {LoggerInterface} from "../logger";
 import mysql2 from "mysql2/promise";
@@ -9,6 +9,7 @@ export {
     PoolOptions as DatabasePoolOptions,
 } from "mysql2/promise";
 
+@injectable()
 export class MysqlProvider implements MysqlInterface {
 
     constructor( @inject(TYPES.LoggerInterface) private logger: LoggerInterface ) {}
