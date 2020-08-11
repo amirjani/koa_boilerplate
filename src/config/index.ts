@@ -22,5 +22,22 @@ export const config: ConfigInterface = {
         reconnectOnError: (err) => {
             return err.message.startsWith("READONLY");
         },
-    }
+    },
+    elasticConfig: {
+        node: process.env.ELASTIC_NODE,
+        auth: {
+            username: process.env.ELASTIC_AUTH_USERNAME,
+            password: process.env.ELASTIC_AUTH_PASSWORD,
+        },
+    },
+    mysqlConfig: {
+        host: process.env.MYSQL_HOST,
+        port: +process.env.MYSQL_PORT,
+        user: process.env.MYSQL_USER,
+        password: process.env.MYSQL_PASSWORD,
+        waitForConnections: process.env.MYSQL_WAITFORCONNECTIONS === "true",
+        connectionLimit: +process.env.MYSQL_CONNECTIONLIMIT,
+        queueLimit: +process.env.MYSQL_QUEUELIMIT,
+        multipleStatements: process.env.MYSQL_MULTIPLESTATEMENTS === "true",
+    },
 }

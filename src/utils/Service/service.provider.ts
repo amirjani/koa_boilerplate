@@ -4,6 +4,7 @@ import {TYPES} from "../types";
 import {RedisInterface} from "../redis";
 import {LoggerInterface} from "../logger";
 import {BcryptInterface} from "../bcrypt";
+import {ElasticInterface} from "../elastic";
 
 @injectable()
 export class ServiceProvider implements ServiceInterface{
@@ -11,7 +12,8 @@ export class ServiceProvider implements ServiceInterface{
     constructor(
         @inject(TYPES.RedisInterface) private redis: RedisInterface,
         @inject(TYPES.LoggerInterface) private logger: LoggerInterface,
-        @inject(TYPES.BcryptInterface) private bcrypt: BcryptInterface
+        @inject(TYPES.BcryptInterface) private bcrypt: BcryptInterface,
+        @inject(TYPES.ElasticInterface) private elastic: ElasticInterface
     ) {
         this.contextAttach();
     }
@@ -27,8 +29,7 @@ export class ServiceProvider implements ServiceInterface{
             '1',
             '$2y$12$WXoq5ItvTO0hKl8jWQYNkOXxGFM9DMm34SVefG1UDTDHpSrkQs8j2'
         )
+        const elastic = await this.elastic.init();
 
-        logger.info("bcrypt = " + bcrypt);
-        logger.info("YAKH KOOO!!!!!")
     }
 }
