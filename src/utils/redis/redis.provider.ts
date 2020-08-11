@@ -23,6 +23,7 @@ export class RedisProvider implements RedisInterface {
             throw new Error("redis problem");
         }
     }
+
     async init() {
         this.redis = new IORedis(config.redis);
 

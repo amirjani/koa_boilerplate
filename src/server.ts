@@ -1,33 +1,30 @@
 import "reflect-metadata";
 import { createKoaServer, useContainer } from "routing-controllers";
-import { DatabaseInterface, RedisInterface, serviceContainer, ServiceInterface } from "./utils";
+import {BcryptInterface, DatabaseInterface, LoggerInterface, RedisInterface, serviceContainer} from "./utils";
 import { TYPES } from "./utils/types";
 import { config } from "./config";
+import {ElasticInterface} from "./utils/elastic";
+import {MysqlInterface} from "./utils/mysql";
 
 useContainer(serviceContainer);
 
-// const redis = serviceContainer.get<RedisInterface>(TYPES.RedisInterface);
-const database = serviceContainer.get<DatabaseInterface>(TYPES.DatabaseInterface);
-
 (async () => {
+
+    // logger
+    const logger: LoggerInterface = await serviceContainer.get<LoggerInterface>(TYPES.LoggerInterface);
+    logger.init();
+    // all databases
+    await serviceContainer.get<DatabaseInterface>(TYPES.DatabaseInterface).init();
 
     const app = createKoaServer({
         routePrefix: `/api/${config.apiVersion}`,
         controllers: [
         ]
     });
-    // const _redis = await redis.init()
-    const redis = await database.redis();
-    const elastic = await database.elasticSearch();
-    const mysql = await database.mysql();
 
-    // app.init = async () => {
-    // await database.redis();
-    // }
-
-    // await app.init();
-
-    app.listen(config.port);
+    app.listen(config.port, () => {
+        logger.info(`app started on port ${config.port}`)
+    });
 })()
 
 
