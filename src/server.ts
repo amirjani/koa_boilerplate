@@ -6,7 +6,7 @@ import { config } from "./config";
 import {ElasticInterface} from "./utils/elastic";
 import {MysqlInterface} from "./utils/mysql";
 
-useContainer(serviceContainer);
+// useContainer(serviceContainer);
 
 (async () => {
 
