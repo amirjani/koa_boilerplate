@@ -14,7 +14,7 @@ const serviceContainer = new Container();
 serviceContainer.bind<LoggerInterface>(TYPES.LoggerInterface).toConstantValue(LoggerProvider.getInstance());
 serviceContainer.bind<RedisInterface>(TYPES.RedisInterface).toConstantValue(RedisProvider.getInstance());
 serviceContainer.bind<BcryptInterface>(TYPES.BcryptInterface).toConstantValue(BcryptProvider.getInstance());
-serviceContainer.bind<ElasticInterface>(TYPES.ElasticInterface).to(ElasticProvider);
+serviceContainer.bind<ElasticInterface>(TYPES.ElasticInterface).toConstantValue(ElasticProvider.getInstance());
 serviceContainer.bind<MysqlInterface>(TYPES.MysqlInterface).to(MysqlProvider);
 serviceContainer.bind<DatabaseInterface>(TYPES.DatabaseInterface).to(DatabaseProvider);
 // todo: will remove

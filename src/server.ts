@@ -18,6 +18,7 @@ const database = serviceContainer.get<DatabaseInterface>(TYPES.DatabaseInterface
     });
     // const _redis = await redis.init()
     const redis = await database.redis();
+    const elastic = await database.elasticSearch();
 
     // app.init = async () => {
     // await database.redis();

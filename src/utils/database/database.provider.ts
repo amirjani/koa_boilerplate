@@ -23,7 +23,6 @@ export class DatabaseProvider implements DatabaseInterface{
     }
 
     async elasticSearch() {
-        this.loggerInstance.log("info", "elasticSearch started")
         return await this.elasticInstance.init();
     }
 

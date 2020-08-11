@@ -4,6 +4,7 @@ import {TYPES} from "../types";
 import {Client} from "@elastic/elasticsearch";
 import {LoggerInterface} from "../logger";
 import {config} from "../../config";
+import {serviceContainer} from "../index";
 export {
     Client as ElasticClient,
     ClientOptions as ElasticClientOptions,
@@ -14,15 +15,26 @@ export {
 export class ElasticProvider implements ElasticInterface{
 
     private readonly elastic;
+    public static instance: ElasticProvider;
 
     constructor(@inject(TYPES.LoggerInterface) private logger: LoggerInterface) {
         this.elastic = new Client(config.elasticConfig);
     }
 
+    public static getInstance() {
+        if (!ElasticProvider.instance) {
+            ElasticProvider.instance = new ElasticProvider(serviceContainer.get<LoggerInterface>(TYPES.LoggerInterface));
+            return ElasticProvider.instance;
+        }else {
+            throw new Error("ELASTIC DOES NOT WORK");
+        }
+
+    }
+
     async init() {
         try {
             await this.elastic.ping();
-            this.logger.info("Elastic Search Connected")
+            this.logger.info(`elasticsearch connected`)
             return this.elastic;
         } catch (error) {
             this.elastic.close();
