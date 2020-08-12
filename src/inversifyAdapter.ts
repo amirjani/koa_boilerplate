@@ -14,13 +14,13 @@ export class InversifyAdapter implements IocAdapter {
     get<T>(someClass: ClassConstructor<T>, action?: Action): T {
         const childContainer = this.container.createChild();
 
-        childContainer.bind<LoggerInterface>(TYPES.LoggerInterface).to(LoggerProvider);
+        childContainer.bind<LoggerInterface>(TYPES.LoggerInterface).toConstantValue(LoggerProvider.getInstance());
 
-        childContainer.bind<RedisInterface>(TYPES.RedisInterface).to(RedisProvider);
-        childContainer.bind<ElasticInterface>(TYPES.ElasticInterface).to(ElasticProvider);
-        childContainer.bind<MysqlInterface>(TYPES.MysqlInterface).to(MysqlProvider);
+        childContainer.bind<RedisInterface>(TYPES.RedisInterface).toConstantValue(RedisProvider.getInstance());
+        childContainer.bind<ElasticInterface>(TYPES.ElasticInterface).toConstantValue(ElasticProvider.getInstance());
+        childContainer.bind<MysqlInterface>(TYPES.MysqlInterface).toConstantValue(MysqlProvider.getInstance());
 
-        childContainer.bind<DatabaseInterface>(TYPES.DatabaseInterface).to(DatabaseProvider);
+        childContainer.bind<DatabaseInterface>(TYPES.DatabaseInterface).toConstantValue(DatabaseProvider.getInstance());
 
         // childContainer.bind(API_SYMBOLS.ClientIp).toConstantValue(action.context.ip);
         return childContainer.resolve<T>(someClass);

@@ -7,6 +7,7 @@ import { BcryptInterface, BcryptProvider } from "./bcrypt";
 import { ElasticInterface, ElasticProvider } from "./elastic";
 import { MysqlInterface, MysqlProvider } from "./mysql";
 import { DatabaseInterface, DatabaseProvider } from "./database";
+import {TestController} from "../controllers/testController";
 
 const serviceContainer = new Container();
 
@@ -19,6 +20,10 @@ serviceContainer.bind<ElasticInterface>(TYPES.ElasticInterface).toConstantValue(
 serviceContainer.bind<MysqlInterface>(TYPES.MysqlInterface).toConstantValue(MysqlProvider.getInstance());
 
 serviceContainer.bind<DatabaseInterface>(TYPES.DatabaseInterface).toConstantValue(DatabaseProvider.getInstance());
+
+serviceContainer.bind(TestController).to(TestController);
+
+
 
 export {
     serviceContainer,

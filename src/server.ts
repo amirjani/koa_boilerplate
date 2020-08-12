@@ -9,9 +9,9 @@ import {TestController} from "./controllers/testController";
 import {Container} from "inversify";
 import {InversifyAdapter} from "./inversifyAdapter";
 
-const container = new Container();
-const inversifyAdapter = new InversifyAdapter(container);
-useContainer(inversifyAdapter);
+// const container = new Container();
+// const inversifyAdapter = new InversifyAdapter(container);
+useContainer(serviceContainer);
 
 (async () => {
 
