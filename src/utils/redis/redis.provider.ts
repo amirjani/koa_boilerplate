@@ -1,4 +1,4 @@
-import { container } from "./../../container";
+import { IoCContainer } from "./../../container";
 import { inject, injectable } from "inversify";
 import { RedisInterface } from "./redis.interface";
 import IORedis from "ioredis";
@@ -14,19 +14,21 @@ export class RedisProvider implements RedisInterface {
 
   constructor(private logger: LoggerInterface) {}
 
-  public static getInstance() {
+  public static async getInstanceAsync() {
     if (!RedisProvider.instance) {
-      const logger = container.get<LoggerInterface>(TYPES.LoggerInterface);
+      const logger = IoCContainer.container.get<LoggerInterface>(
+        TYPES.LoggerInterface
+      );
       RedisProvider.instance = new RedisProvider(logger);
+      await RedisProvider.instance.init();
       return RedisProvider.instance;
     } else {
       throw new Error("redis problem");
     }
   }
 
-  async init() {
+  private async init() {
     this.redis = new IORedis(config.redis);
-
     try {
       await this.redis.connect();
       this.logger.log("info", `redis connected on port ${config.port}`);

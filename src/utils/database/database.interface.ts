@@ -1,7 +1,6 @@
 export interface DatabaseInterface {
-    init();
-
-    mysql();
-    elasticSearch();
-    redis();
+  // init();
+  // mysql();
+  // elasticSearch();
+  // redis();
 }

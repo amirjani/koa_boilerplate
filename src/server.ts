@@ -1,28 +1,21 @@
 import "reflect-metadata";
 import { createKoaServer, useContainer } from "routing-controllers";
-import { serviceContainer, LoggerInterface, DatabaseInterface } from "./utils";
 import { config } from "./config";
+import { IoCContainer } from "./container";
 import { TestController } from "./controllers/testController";
-import { inversifyAdapter, container } from "./container";
-import { TYPES } from "./utils/types";
-
-useContainer(inversifyAdapter);
+import { LoggerInterface, LoggerProvider } from "./utils";
 
 (async () => {
-  // logger
-  const logger: LoggerInterface = container.get<LoggerInterface>(
-    TYPES.LoggerInterface
-  );
-  logger.init();
-  // all databases
-  await container.get<DatabaseInterface>(TYPES.DatabaseInterface).init();
+  const IoC = await IoCContainer.getInstanceAsync();
+  useContainer(IoC);
 
   const app = createKoaServer({
-    // routePrefix: `/api/${config.apiVersion}`,
     controllers: [TestController],
   });
 
   app.listen(config.port, () => {
-    console.info(`app started on port ${config.port}`);
+    IoC.get(LoggerProvider).warn(
+      `Server started at -> http://localhost:${config.port}`
+    );
   });
 })();
