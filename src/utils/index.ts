@@ -11,10 +11,13 @@ import { DatabaseInterface, DatabaseProvider } from "./database";
 const serviceContainer = new Container();
 
 serviceContainer.bind<LoggerInterface>(TYPES.LoggerInterface).toConstantValue(LoggerProvider.getInstance());
-serviceContainer.bind<RedisInterface>(TYPES.RedisInterface).toConstantValue(RedisProvider.getInstance());
+
 serviceContainer.bind<BcryptInterface>(TYPES.BcryptInterface).toConstantValue(BcryptProvider.getInstance());
+
+serviceContainer.bind<RedisInterface>(TYPES.RedisInterface).toConstantValue(RedisProvider.getInstance());
 serviceContainer.bind<ElasticInterface>(TYPES.ElasticInterface).toConstantValue(ElasticProvider.getInstance());
 serviceContainer.bind<MysqlInterface>(TYPES.MysqlInterface).toConstantValue(MysqlProvider.getInstance());
+
 serviceContainer.bind<DatabaseInterface>(TYPES.DatabaseInterface).toConstantValue(DatabaseProvider.getInstance());
 
 export {

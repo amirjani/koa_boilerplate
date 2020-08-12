@@ -5,8 +5,13 @@ import { TYPES } from "./utils/types";
 import { config } from "./config";
 import {ElasticInterface} from "./utils/elastic";
 import {MysqlInterface} from "./utils/mysql";
+import {TestController} from "./controllers/testController";
+import {Container} from "inversify";
+import {InversifyAdapter} from "./inversifyAdapter";
 
-// useContainer(serviceContainer);
+const container = new Container();
+const inversifyAdapter = new InversifyAdapter(container);
+useContainer(inversifyAdapter);
 
 (async () => {
 
@@ -17,8 +22,9 @@ import {MysqlInterface} from "./utils/mysql";
     await serviceContainer.get<DatabaseInterface>(TYPES.DatabaseInterface).init();
 
     const app = createKoaServer({
-        routePrefix: `/api/${config.apiVersion}`,
+        // routePrefix: `/api/${config.apiVersion}`,
         controllers: [
+            TestController
         ]
     });
 
