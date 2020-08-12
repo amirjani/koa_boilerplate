@@ -5,7 +5,7 @@ import { config } from "../../config";
 import { TYPES } from "../types";
 import { LoggerInterface } from "../logger";
 import { serviceContainer } from "../index";
-import { container } from "../../container";
+import { IoCContainer } from "../../container";
 
 @injectable()
 export class BcryptProvider implements BcryptInterface {
@@ -15,7 +15,9 @@ export class BcryptProvider implements BcryptInterface {
 
   public static getInstance() {
     if (!BcryptProvider.instance) {
-      const logger = container.get<LoggerInterface>(TYPES.LoggerInterface);
+      const logger = IoCContainer.container.get<LoggerInterface>(
+        TYPES.LoggerInterface
+      );
       BcryptProvider.instance = new BcryptProvider(logger);
       return BcryptProvider.instance;
     } else {
@@ -23,11 +25,14 @@ export class BcryptProvider implements BcryptInterface {
     }
   }
 
-  async hashPassword(password: string): Promise<string> {
+  public async hashPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, config.bcryptSalt);
   }
 
-  async comparePassword(password: string, hash: string): Promise<boolean> {
+  public async comparePassword(
+    password: string,
+    hash: string
+  ): Promise<boolean> {
     return await bcrypt.compare(password, hash);
   }
 }

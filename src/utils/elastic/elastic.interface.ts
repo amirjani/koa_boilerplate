@@ -1,3 +1,5 @@
+import { ElasticClient } from "./elastic.provider";
+
 export interface ElasticInterface {
-    init();
+  elastic: ElasticClient;
 }

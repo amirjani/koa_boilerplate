@@ -1,4 +1,4 @@
-import { container } from "./../../container";
+import { IoCContainer } from "./../../container";
 import { ElasticInterface } from "./elastic.interface";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../types";
@@ -13,24 +13,31 @@ export {
 
 @injectable()
 export class ElasticProvider implements ElasticInterface {
-  private readonly elastic;
+  private _elastic: Client;
+  public get elastic(): Client {
+    return this._elastic;
+  }
+
   public static instance: ElasticProvider;
 
   constructor(private logger: LoggerInterface) {
-    this.elastic = new Client(config.elasticConfig);
+    this._elastic = new Client(config.elasticConfig);
   }
 
-  public static getInstance() {
+  public static async getInstanceAsync() {
     if (!ElasticProvider.instance) {
-      const logger = container.get<LoggerInterface>(TYPES.LoggerInterface);
+      const logger = IoCContainer.container.get<LoggerInterface>(
+        TYPES.LoggerInterface
+      );
       ElasticProvider.instance = new ElasticProvider(logger);
+      await ElasticProvider.instance.init();
       return ElasticProvider.instance;
     } else {
       throw new Error("ELASTIC DOES NOT WORK");
     }
   }
 
-  async init() {
+  private async init() {
     try {
       await this.elastic.ping();
       this.logger.info(`elasticsearch connected`);

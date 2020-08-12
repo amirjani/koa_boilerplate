@@ -1,3 +1,5 @@
+import { DatabasePool } from "./mysql.provider";
+
 export interface MysqlInterface {
-    init();
+  pool: DatabasePool;
 }

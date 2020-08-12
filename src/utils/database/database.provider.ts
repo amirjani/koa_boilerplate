@@ -1,4 +1,4 @@
-import { container } from "./../../container";
+import { IoCContainer } from "./../../container";
 import { DatabaseInterface } from "./database.interface";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../types";
@@ -21,12 +21,16 @@ export class DatabaseProvider implements DatabaseInterface {
 
   public static getInstance() {
     if (!DatabaseProvider.instance) {
-      const mysqlInstance = container.get<MysqlInterface>(TYPES.MysqlInterface);
-      const redisInstance = container.get<RedisInterface>(TYPES.RedisInterface);
-      const elasticInstance = container.get<ElasticInterface>(
+      const mysqlInstance = IoCContainer.container.get<MysqlInterface>(
+        TYPES.MysqlInterface
+      );
+      const redisInstance = IoCContainer.container.get<RedisInterface>(
+        TYPES.RedisInterface
+      );
+      const elasticInstance = IoCContainer.container.get<ElasticInterface>(
         TYPES.ElasticInterface
       );
-      const loggerInstance = container.get<LoggerInterface>(
+      const loggerInstance = IoCContainer.container.get<LoggerInterface>(
         TYPES.LoggerInterface
       );
       DatabaseProvider.instance = new DatabaseProvider(
@@ -42,19 +46,19 @@ export class DatabaseProvider implements DatabaseInterface {
     }
   }
 
-  async init() {
-    await Promise.all([this.mysql(), this.elasticSearch(), this.redis()]);
-  }
+  // async init() {
+  //   await Promise.all([this.mysql(), this.elasticSearch(), this.redis()]);
+  // }
 
-  async mysql() {
-    return await this.mysqlInstance.init();
-  }
+  // async mysql() {
+  //   return await this.mysqlInstance.init();
+  // }
 
-  async elasticSearch() {
-    return await this.elasticInstance.init();
-  }
+  // async elasticSearch() {
+  //   return await this.elasticInstance.init();
+  // }
 
-  async redis() {
-    return await this.redisInstance.init();
-  }
+  // async redis() {
+  //   return await this.redisInstance.init();
+  // }
 }
