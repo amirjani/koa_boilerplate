@@ -3,7 +3,7 @@ import { IoCContainer } from "./../../container";
 import { MysqlInterface } from "./mysql.interface";
 import { injectable } from "inversify";
 import { TYPES } from "../types";
-import { LoggerInterface } from "../logger";
+import { LoggerInterface, LoggerProvider } from "../logger";
 import { config } from "../../config";
 
 export {
@@ -20,9 +20,7 @@ export class MysqlProvider implements MysqlInterface {
 
   public static async getInstanceAsync() {
     if (!MysqlProvider.instance) {
-      const logger = IoCContainer.container.get<LoggerInterface>(
-        TYPES.LoggerInterface
-      );
+      const logger = IoCContainer.instance.get(LoggerProvider);
       MysqlProvider.instance = new MysqlProvider(logger);
       await MysqlProvider.instance.init();
       return MysqlProvider.instance;

@@ -15,11 +15,23 @@ import { TYPES } from "./utils/types";
 import { ElasticInterface, ElasticProvider } from "./utils/elastic";
 import { MysqlInterface, MysqlProvider } from "./utils/mysql";
 export class IoCContainer {
-  public static instance: IoCContainer;
+  // public static instance: IoCContainer;
+
+  private static _instance: IoCContainer;
+  public static get instance(): IoCContainer {
+    if (!this._instance) {
+      throw Error(
+        "IoCContainer Not initiated yet, call getInstanceAsync first"
+      );
+    } else {
+      return this._instance;
+    }
+  }
+
   public static container: Container = new Container();
   public static async getInstanceAsync() {
-    if (!IoCContainer.instance) {
-      IoCContainer.instance = new IoCContainer();
+    if (!IoCContainer._instance) {
+      IoCContainer._instance = new IoCContainer();
       await IoCContainer.instance.init();
     }
     return IoCContainer.instance;
@@ -42,7 +54,6 @@ export class IoCContainer {
       .bind<MysqlInterface>(TYPES.MysqlInterface)
       .toConstantValue(await MysqlProvider.getInstanceAsync());
   }
-
   public get<T>(someClass: ClassConstructor<T>, action?: Action): T {
     return IoCContainer.container.resolve<T>(someClass);
   }
