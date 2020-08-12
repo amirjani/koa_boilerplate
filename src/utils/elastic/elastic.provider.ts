@@ -1,3 +1,4 @@
+import { LoggerProvider } from "./../logger/logger.provider";
 import { IoCContainer } from "./../../container";
 import { ElasticInterface } from "./elastic.interface";
 import { inject, injectable } from "inversify";
@@ -26,9 +27,7 @@ export class ElasticProvider implements ElasticInterface {
 
   public static async getInstanceAsync() {
     if (!ElasticProvider.instance) {
-      const logger = IoCContainer.container.get<LoggerInterface>(
-        TYPES.LoggerInterface
-      );
+      const logger = IoCContainer.instance.get(LoggerProvider);
       ElasticProvider.instance = new ElasticProvider(logger);
       await ElasticProvider.instance.init();
       return ElasticProvider.instance;

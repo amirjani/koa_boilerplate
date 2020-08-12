@@ -1,9 +1,11 @@
 import "reflect-metadata";
+
+import { LoggerInterface } from "./utils/logger/logger.interface";
 import { createKoaServer, useContainer } from "routing-controllers";
 import { config } from "./config";
 import { IoCContainer } from "./container";
 import { TestController } from "./controllers/testController";
-import { LoggerInterface, LoggerProvider } from "./utils";
+import { TYPES } from "./utils/types";
 
 (async () => {
   const IoC = await IoCContainer.getInstanceAsync();
@@ -14,8 +16,8 @@ import { LoggerInterface, LoggerProvider } from "./utils";
   });
 
   app.listen(config.port, () => {
-    IoC.get(LoggerProvider).warn(
-      `Server started at -> http://localhost:${config.port}`
-    );
+    IoCContainer.instance
+      .get<LoggerInterface>(TYPES.LoggerInterface)
+      .warn(`Server started at -> http://localhost:${config.port}`);
   });
 })();

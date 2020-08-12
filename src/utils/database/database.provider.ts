@@ -21,24 +21,24 @@ export class DatabaseProvider implements DatabaseInterface {
 
   public static getInstance() {
     if (!DatabaseProvider.instance) {
-      const mysqlInstance = IoCContainer.container.get<MysqlInterface>(
-        TYPES.MysqlInterface
-      );
-      const redisInstance = IoCContainer.container.get<RedisInterface>(
-        TYPES.RedisInterface
-      );
-      const elasticInstance = IoCContainer.container.get<ElasticInterface>(
-        TYPES.ElasticInterface
-      );
-      const loggerInstance = IoCContainer.container.get<LoggerInterface>(
-        TYPES.LoggerInterface
-      );
-      DatabaseProvider.instance = new DatabaseProvider(
-        mysqlInstance,
-        redisInstance,
-        elasticInstance,
-        loggerInstance
-      );
+      // const mysqlInstance = IoCContainer.container.get<MysqlInterface>(
+      //   TYPES.MysqlInterface
+      // );
+      // const redisInstance = IoCContainer.container.get<RedisInterface>(
+      //   TYPES.RedisInterface
+      // );
+      // const elasticInstance = IoCContainer.container.get<ElasticInterface>(
+      //   TYPES.ElasticInterface
+      // );
+      // const loggerInstance = IoCContainer.container.get<LoggerInterface>(
+      //   TYPES.LoggerInterface
+      // );
+      // DatabaseProvider.instance = new DatabaseProvider(
+      //   mysqlInstance,
+      //   redisInstance,
+      //   elasticInstance,
+      //   loggerInstance
+      // );
 
       return DatabaseProvider.instance;
     } else {

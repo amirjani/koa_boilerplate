@@ -5,7 +5,7 @@ import IORedis from "ioredis";
 import { config } from "../../config";
 import { TYPES } from "../types";
 import { LoggerInterface } from "../logger";
-import { serviceContainer } from "../index";
+import { serviceContainer, LoggerProvider } from "../index";
 
 @injectable()
 export class RedisProvider implements RedisInterface {
@@ -16,9 +16,7 @@ export class RedisProvider implements RedisInterface {
 
   public static async getInstanceAsync() {
     if (!RedisProvider.instance) {
-      const logger = IoCContainer.container.get<LoggerInterface>(
-        TYPES.LoggerInterface
-      );
+      const logger = IoCContainer.instance.get<LoggerInterface>(LoggerProvider);
       RedisProvider.instance = new RedisProvider(logger);
       await RedisProvider.instance.init();
       return RedisProvider.instance;

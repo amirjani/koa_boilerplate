@@ -28,7 +28,11 @@ export class IoCContainer {
     }
   }
 
-  public static container: Container = new Container();
+  public container: Container = new Container();
+  /**
+   * To initiate IoC system this function must be called at the very first of application
+   * before Server app initiation
+   */
   public static async getInstanceAsync() {
     if (!IoCContainer._instance) {
       IoCContainer._instance = new IoCContainer();
@@ -37,24 +41,28 @@ export class IoCContainer {
     return IoCContainer.instance;
   }
   private async init() {
-    IoCContainer.container.bind("Hi").toConstantValue("Hi Be To");
-    IoCContainer.container
+    this.container.bind("Hi").toConstantValue("Hi Be To");
+    this.container
       .bind<LoggerInterface>(TYPES.LoggerInterface)
       .toConstantValue(LoggerProvider.getInstance());
-    IoCContainer.container
+    this.container
       .bind<BcryptInterface>(TYPES.BcryptInterface)
       .toConstantValue(BcryptProvider.getInstance());
-    IoCContainer.container
+    this.container
       .bind<RedisInterface>(TYPES.RedisInterface)
       .toConstantValue(await RedisProvider.getInstanceAsync());
-    IoCContainer.container
+    this.container
       .bind<ElasticInterface>(TYPES.ElasticInterface)
       .toConstantValue(await ElasticProvider.getInstanceAsync());
-    IoCContainer.container
+    this.container
       .bind<MysqlInterface>(TYPES.MysqlInterface)
       .toConstantValue(await MysqlProvider.getInstanceAsync());
   }
-  public get<T>(someClass: ClassConstructor<T>, action?: Action): T {
-    return IoCContainer.container.resolve<T>(someClass);
+  public get<T>(some: ClassConstructor<T> | symbol, action?: Action): T {
+    if (typeof some === "symbol") {
+      return this.container.get<T>(some);
+    } else if (typeof some === "function") {
+      return this.container.resolve<T>(some);
+    }
   }
 }

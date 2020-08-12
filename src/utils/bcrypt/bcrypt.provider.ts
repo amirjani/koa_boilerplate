@@ -1,3 +1,4 @@
+import { LoggerProvider } from "./../logger/logger.provider";
 import { inject, injectable } from "inversify";
 import { BcryptInterface } from "./bcrypt.interface";
 import bcrypt from "bcrypt";
@@ -15,9 +16,7 @@ export class BcryptProvider implements BcryptInterface {
 
   public static getInstance() {
     if (!BcryptProvider.instance) {
-      const logger = IoCContainer.container.get<LoggerInterface>(
-        TYPES.LoggerInterface
-      );
+      const logger = IoCContainer.instance.get<LoggerInterface>(LoggerProvider);
       BcryptProvider.instance = new BcryptProvider(logger);
       return BcryptProvider.instance;
     } else {
