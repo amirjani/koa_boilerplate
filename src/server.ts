@@ -3,6 +3,7 @@ import { createKoaServer, useContainer } from "routing-controllers";
 import { config } from "./config";
 import { IoCContainer } from "./container";
 import { TestController } from "./controllers/testController";
+import { LoggerInterface, LoggerProvider } from "./utils";
 
 (async () => {
   const IoC = await IoCContainer.getInstanceAsync();
@@ -13,6 +14,8 @@ import { TestController } from "./controllers/testController";
   });
 
   app.listen(config.port, () => {
-    console.info(`app started on port ${config.port}`);
+    IoC.get(LoggerProvider).warn(
+      `Server started at -> http://localhost:${config.port}`
+    );
   });
 })();
