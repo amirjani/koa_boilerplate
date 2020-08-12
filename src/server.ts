@@ -1,40 +1,28 @@
 import "reflect-metadata";
 import { createKoaServer, useContainer } from "routing-controllers";
-import {BcryptInterface, DatabaseInterface, LoggerInterface, RedisInterface, serviceContainer} from "./utils";
-import { TYPES } from "./utils/types";
+import { serviceContainer, LoggerInterface, DatabaseInterface } from "./utils";
 import { config } from "./config";
-import {ElasticInterface} from "./utils/elastic";
-import {MysqlInterface} from "./utils/mysql";
-import {TestController} from "./controllers/testController";
-import {Container} from "inversify";
-import {InversifyAdapter} from "./inversifyAdapter";
+import { TestController } from "./controllers/testController";
+import { inversifyAdapter, container } from "./container";
+import { TYPES } from "./utils/types";
 
-// const container = new Container();
-// const inversifyAdapter = new InversifyAdapter(container);
-useContainer(serviceContainer);
+useContainer(inversifyAdapter);
 
 (async () => {
+  // logger
+  const logger: LoggerInterface = container.get<LoggerInterface>(
+    TYPES.LoggerInterface
+  );
+  logger.init();
+  // all databases
+  await container.get<DatabaseInterface>(TYPES.DatabaseInterface).init();
 
-    // logger
-    const logger: LoggerInterface = await serviceContainer.get<LoggerInterface>(TYPES.LoggerInterface);
-    logger.init();
-    // all databases
-    await serviceContainer.get<DatabaseInterface>(TYPES.DatabaseInterface).init();
+  const app = createKoaServer({
+    // routePrefix: `/api/${config.apiVersion}`,
+    controllers: [TestController],
+  });
 
-    const app = createKoaServer({
-        // routePrefix: `/api/${config.apiVersion}`,
-        controllers: [
-            TestController
-        ]
-    });
-
-    app.listen(config.port, () => {
-        logger.info(`app started on port ${config.port}`)
-    });
-})()
-
-
-
-
-
-
+  app.listen(config.port, () => {
+    console.info(`app started on port ${config.port}`);
+  });
+})();
