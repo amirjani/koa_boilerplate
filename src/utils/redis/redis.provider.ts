@@ -1,11 +1,10 @@
-import { IoCContainer } from "./../../container";
-import { inject, injectable } from "inversify";
+import { IoCContainer } from "../../container";
+import { injectable } from "inversify";
 import { RedisInterface } from "./redis.interface";
 import IORedis from "ioredis";
 import { config } from "../../config";
 import { TYPES } from "../types";
 import { LoggerInterface } from "../logger";
-import { serviceContainer } from "../index";
 
 @injectable()
 export class RedisProvider implements RedisInterface {

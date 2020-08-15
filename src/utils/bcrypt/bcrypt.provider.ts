@@ -1,10 +1,9 @@
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import { BcryptInterface } from "./bcrypt.interface";
 import bcrypt from "bcrypt";
 import { config } from "../../config";
 import { TYPES } from "../types";
 import { LoggerInterface } from "../logger";
-import { serviceContainer } from "../index";
 import { IoCContainer } from "../../container";
 
 @injectable()

@@ -1,11 +1,11 @@
-import { IoCContainer } from "./../../container";
+import { IoCContainer } from "../../container";
 import { ElasticInterface } from "./elastic.interface";
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import { TYPES } from "../types";
 import { Client } from "@elastic/elasticsearch";
 import { LoggerInterface } from "../logger";
 import { config } from "../../config";
-import { serviceContainer } from "../index";
+
 export {
   Client as ElasticClient,
   ClientOptions as ElasticClientOptions,

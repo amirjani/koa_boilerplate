@@ -1,12 +1,11 @@
-import { IoCContainer } from "./../../container";
+import { IoCContainer } from "../../container";
 import { DatabaseInterface } from "./database.interface";
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import { TYPES } from "../types";
 import { MysqlInterface } from "../mysql";
 import { RedisInterface } from "../redis";
 import { LoggerInterface } from "../logger";
 import { ElasticInterface } from "../elastic";
-import { serviceContainer } from "../index";
 
 @injectable()
 export class DatabaseProvider implements DatabaseInterface {
